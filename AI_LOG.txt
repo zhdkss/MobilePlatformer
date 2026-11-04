@@ -44,3 +44,13 @@ Tool: Claude (Anthropic), chat + computer control of the Unity editor
   added labels JUMP / FIRE.
 - Unity Remote "Not Connected" -> found in Editor.log that Unity sees the iPhone
   but the connection is refused by the Remote app; used "Any iOS Device".
+
+ASSIGNMENT 8-9 (UI, GDD, Git)
+- AI (Claude, chat) explained how to set up Git, how to build the pause panel
+  (Time.timeScale), Canvas Scaler (Match 1) and SafeArea, and gave example code.
+- I typed PauseMenu.cs and SafeArea.cs myself, built the UI in the Unity editor,
+  and tested on three devices in Device Simulator.
+- AI made a draft of the GDD from my README; I read it, edited it and exported the PDF.
+- Problem: gems did not work in Levels 1-2 -> Coin Counter "Label" was empty after
+  I moved GemText into SafeArea; I reassigned it in the Inspector.
+- Problem: pause button did nothing -> On Click target was empty; I assigned PauseManager.
