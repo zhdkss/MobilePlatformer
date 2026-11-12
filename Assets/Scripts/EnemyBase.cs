@@ -6,7 +6,7 @@ using UnityEngine;
 public abstract class EnemyBase : MonoBehaviour
 {
     [Header("Зрение")]
-    public float viewRange = 7f;                    // как далеко видит
+    public float viewRange = 5f;                    // как далеко видит
     [Range(10f, 360f)] public float viewAngle = 120f; // угол обзора перед собой
     public LayerMask obstacleMask;                  // стены и земля закрывают обзор
 

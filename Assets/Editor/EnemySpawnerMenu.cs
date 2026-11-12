@@ -28,7 +28,7 @@ public static class EnemySpawnerMenu
         GameObject go = CreateEnemy("Shooter", 18, new Color(0.75f, 0.85f, 1f));
         ShooterEnemy e = go.AddComponent<ShooterEnemy>();
         e.obstacleMask = GroundMask();
-        e.viewRange = 9f;
+        e.viewRange = 6f;
         e.viewAngle = 360f;                 // стрелок сам поворачивается к игроку
         e.projectilePrefab = AssetDatabase.LoadAssetAtPath<GameObject>(FireballPrefab);
         e.firePoint = CreateChild(go, "FirePoint", new Vector3(0f, 0.2f, 0f));
@@ -53,7 +53,7 @@ public static class EnemySpawnerMenu
         GameObject go = CreateEnemy("Charger", 21, new Color(1f, 0.8f, 0.6f));
         ChargerEnemy e = go.AddComponent<ChargerEnemy>();
         e.obstacleMask = GroundMask();
-        e.viewRange = 8f;
+        e.viewRange = 5f;
         e.viewAngle = 360f;
     }
 
