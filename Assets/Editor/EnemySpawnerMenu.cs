@@ -25,7 +25,7 @@ public static class EnemySpawnerMenu
     [MenuItem("Tools/Gem Runner/Add Shooter")]
     static void AddShooter()
     {
-        GameObject go = CreateEnemy("Shooter", 18, new Color(0.75f, 0.85f, 1f));
+        GameObject go = CreateEnemy("Shooter", 11, Color.white);
         ShooterEnemy e = go.AddComponent<ShooterEnemy>();
         e.obstacleMask = GroundMask();
         e.viewRange = 6f;

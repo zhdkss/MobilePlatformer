@@ -15,8 +15,18 @@ What I asked the AI agent, what went wrong, what I changed and why.
 - 2026-11-12  Fairness: every attack has a wind-up (Patroller 0.5 s, Shooter 0.6 s with a red aim
   line, Charger 0.7 s with shaking) and a cooldown; no enemy attacks while it is off-screen.
 
-<!-- TODO (Dias): fill in after testing in Unity and after the playtest. Delete this comment.
-- 2026-11-12  What the agent got wrong and how I fixed it: ...
+- 2026-11-12  Agent mistake: the Shooter got the same sprite as my old enemies (sheet index 18),
+  so I could not tell them apart in the level. Changed it to the orange block (index 11).
+- 2026-11-12  Agent mistake: default vision range was too long (7–9 units), enemies reacted before
+  I could read them. I noticed it while testing and asked for shorter defaults (5–6).
+- 2026-11-12  Found while testing: the hero could not jump on the moving platform. Cause: the
+  platform was on the Default layer and the ground check only looks at the Ground layer. Moved the
+  platform to Ground; the agent also made the hero ride with the platform.
+- 2026-11-12  Controls felt hard on the phone. Asked the agent to improve `PlayerController`: stick
+  dead zone, coyote time 0.12 s, jump buffer 0.15 s, short press = low jump. It also fixed my old
+  bug where the jump sound played even in the air.
+
+<!-- TODO (Dias): fill in after the playtest. Delete this comment.
 - 2026-11-12  Playtest: <name> ... tries, <name> ... tries.
 - 2026-11-12  Changed <number> from ... to ... because ...
 - 2026-11-12  Changed <number> from ... to ... because ...
