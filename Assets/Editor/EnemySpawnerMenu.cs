@@ -28,8 +28,6 @@ public static class EnemySpawnerMenu
         GameObject go = CreateEnemy("Shooter", 11, Color.white);
         ShooterEnemy e = go.AddComponent<ShooterEnemy>();
         e.obstacleMask = GroundMask();
-        e.viewRange = 6f;
-        e.viewAngle = 360f;                 // стрелок сам поворачивается к игроку
         e.projectilePrefab = AssetDatabase.LoadAssetAtPath<GameObject>(FireballPrefab);
         e.firePoint = CreateChild(go, "FirePoint", new Vector3(0f, 0.2f, 0f));
         e.shootSound = AssetDatabase.LoadAssetAtPath<AudioClip>("Assets/Audio/shoot.wav");
@@ -53,8 +51,6 @@ public static class EnemySpawnerMenu
         GameObject go = CreateEnemy("Charger", 21, new Color(1f, 0.8f, 0.6f));
         ChargerEnemy e = go.AddComponent<ChargerEnemy>();
         e.obstacleMask = GroundMask();
-        e.viewRange = 5f;
-        e.viewAngle = 360f;
     }
 
     static GameObject CreateEnemy(string name, int spriteIndex, Color tint)

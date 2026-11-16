@@ -4,9 +4,9 @@ using UnityEngine.UI;
 
 public class PlayerHealth : MonoBehaviour
 {
-    public int maxHp = 3;
+    public PlayerStats stats;         // maxHp и время неуязвимости лежат в ассете
     public Image[] hearts;            // 3 сердца из HUD
-    public float invincibleTime = 1.5f;
+    public float blinkInterval = 0.1f; // как часто мигает спрайт (только вид)
     public float fallY = -10f;        // ниже этой высоты = упал в яму
     public AudioClip hurtSound;
 
@@ -16,7 +16,7 @@ public class PlayerHealth : MonoBehaviour
 
     void Start()
     {
-        hp = maxHp;
+        hp = stats.maxHp;
         sr = GetComponent<SpriteRenderer>();
         UpdateHearts();
     }
@@ -38,17 +38,17 @@ public class PlayerHealth : MonoBehaviour
 
     public void Heal(int amount)
     {
-        hp = Mathf.Min(hp + amount, maxHp);
+        hp = Mathf.Min(hp + amount, stats.maxHp);
         UpdateHearts();
     }
 
     IEnumerator Invincibility()
     {
         invincible = true;
-        for (float t = 0; t < invincibleTime; t += 0.1f)
+        for (float t = 0; t < stats.invincibleTime; t += blinkInterval)
         {
             sr.enabled = !sr.enabled;          // мигание
-            yield return new WaitForSeconds(0.1f);
+            yield return new WaitForSeconds(blinkInterval);
         }
         sr.enabled = true;
         invincible = false;

@@ -7,15 +7,9 @@ public class ChargerEnemy : EnemyBase
 {
     enum State { Idle, WindUp, Charge, Recover }
 
-    [Header("Обнаружение")]
-    public float heightTolerance = 1.2f;   // игрок должен быть примерно на той же высоте
-
-    [Header("Рывок")]
-    public float windUpTime = 0.7f;        // замах перед рывком
+    [Header("Замах (только вид)")]
     public float shakeAmount = 0.05f;
-    public float chargeSpeed = 11f;
-    public float chargeDistance = 7f;
-    public float recoverTime = 1.2f;       // оглушение после рывка
+    public float shakeSpeed = 60f;
 
     [Header("Стены и обрывы")]
     public float wallCheckDistance = 0.6f;
@@ -50,7 +44,7 @@ public class ChargerEnemy : EnemyBase
         if (player == null) return;
 
         float dy = Mathf.Abs(player.position.y - transform.position.y);
-        if (dy > heightTolerance) return;
+        if (dy > stats.heightTolerance) return;
 
         FacePlayer();
         if (CanSeePlayer() && IsOnScreen())
@@ -65,10 +59,10 @@ public class ChargerEnemy : EnemyBase
     {
         Telegraph();
         // дрожим на месте, чтобы замах было видно
-        float offset = Mathf.Sin(Time.time * 60f) * shakeAmount;
+        float offset = Mathf.Sin(Time.time * shakeSpeed) * shakeAmount;
         transform.position = windUpPos + new Vector3(offset, 0f, 0f);
 
-        if (stateTimer >= windUpTime)
+        if (stateTimer >= stats.windUpTime)
         {
             transform.position = windUpPos;
             travelled = 0f;
@@ -82,22 +76,22 @@ public class ChargerEnemy : EnemyBase
 
         // стена впереди или обрыв под ногами — останавливаемся
         bool wall = Physics2D.Raycast(transform.position, dir, wallCheckDistance, obstacleMask);
-        Vector2 ahead = (Vector2)transform.position + dir * 0.5f;
+        Vector2 ahead = (Vector2)transform.position + dir * wallCheckDistance;
         bool ground = Physics2D.Raycast(ahead, Vector2.down, groundCheckDistance, obstacleMask);
 
-        if (wall || !ground || travelled >= chargeDistance)
+        if (wall || !ground || travelled >= stats.attackDistance)
         {
             SetState(State.Recover);
             return;
         }
 
-        float step = chargeSpeed * Time.deltaTime;
+        float step = stats.attackSpeed * Time.deltaTime;
         transform.position += new Vector3(facing * step, 0f, 0f);
         travelled += step;
     }
 
     void Recover()
     {
-        if (stateTimer >= recoverTime) SetState(State.Idle);
+        if (stateTimer >= stats.cooldown) SetState(State.Idle);
     }
 }

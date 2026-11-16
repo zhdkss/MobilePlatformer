@@ -4,20 +4,12 @@ using UnityEngine.InputSystem;
 [RequireComponent(typeof(Rigidbody2D))]
 public class PlayerController : MonoBehaviour
 {
-    [Header("Движение")]
-    public float moveSpeed = 6f;
-    public float jumpForce = 13f;
+    public PlayerStats stats;               // числа баланса лежат в ассете
 
     [Header("Земля")]
     public Transform groundCheck;
     public float groundRadius = 0.15f;
     public LayerMask groundLayer;
-
-    [Header("Удобство управления")]
-    public float stickDeadZone = 0.25f;     // слабый наклон стика не считается
-    public float coyoteTime = 0.12f;        // можно прыгнуть чуть позже края платформы
-    public float jumpBufferTime = 0.15f;    // нажатие чуть раньше приземления запоминается
-    public float jumpCutMultiplier = 0.5f;  // отпустил кнопку рано = низкий прыжок
 
     [Header("Input System")]
     public InputActionReference moveAction;   // Player/Move
@@ -59,14 +51,14 @@ public class PlayerController : MonoBehaviour
         // Джойстик и клавиатура дают одно и то же действие Move.
         // На телефоне трудно держать стик ровно, поэтому: мёртвая зона, а дальше сразу полная скорость
         float raw = moveAction.action.ReadValue<Vector2>().x;
-        inputX = Mathf.Abs(raw) < stickDeadZone ? 0f : Mathf.Sign(raw);
+        inputX = Mathf.Abs(raw) < stats.stickDeadZone ? 0f : Mathf.Sign(raw);
 
         // Разворот спрайта по направлению
         if (inputX > 0.01f) sr.flipX = false;
         else if (inputX < -0.01f) sr.flipX = true;
 
         // Прыжок: земля "помнится" coyoteTime секунд, нажатие — jumpBufferTime секунд
-        coyoteTimer = isGrounded ? coyoteTime : coyoteTimer - Time.deltaTime;
+        coyoteTimer = isGrounded ? stats.coyoteTime : coyoteTimer - Time.deltaTime;
         jumpBufferTimer -= Time.deltaTime;
         if (jumpBufferTimer > 0f && coyoteTimer > 0f) Jump();
 
@@ -93,26 +85,26 @@ public class PlayerController : MonoBehaviour
         platform = current;
         if (current != null) lastPlatformPos = current.position;
 
-        rb.linearVelocity = new Vector2(inputX * moveSpeed, rb.linearVelocity.y);
+        rb.linearVelocity = new Vector2(inputX * stats.moveSpeed, rb.linearVelocity.y);
     }
 
     void OnJumpPressed(InputAction.CallbackContext ctx)
     {
-        jumpBufferTimer = jumpBufferTime;     // сам прыжок случится в Update
+        jumpBufferTimer = stats.jumpBufferTime;     // сам прыжок случится в Update
     }
 
     void OnJumpReleased(InputAction.CallbackContext ctx)
     {
         // отпустили кнопку, пока летим вверх — срезаем высоту
         if (rb.linearVelocity.y > 0f)
-            rb.linearVelocity = new Vector2(rb.linearVelocity.x, rb.linearVelocity.y * jumpCutMultiplier);
+            rb.linearVelocity = new Vector2(rb.linearVelocity.x, rb.linearVelocity.y * stats.jumpCutMultiplier);
     }
 
     void Jump()
     {
         jumpBufferTimer = 0f;
         coyoteTimer = 0f;
-        rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce);
+        rb.linearVelocity = new Vector2(rb.linearVelocity.x, stats.jumpForce);
         if (jumpSound) AudioSource.PlayClipAtPoint(jumpSound, Camera.main.transform.position);
     }
 

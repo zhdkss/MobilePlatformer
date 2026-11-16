@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
-    public float bounceForce = 10f;
+    public EnemyStats stats;      // урон от касания и сила отскока
 
     void OnTriggerEnter2D(Collider2D other)
     {
@@ -13,12 +13,12 @@ public class Enemy : MonoBehaviour
         // игрок падает сверху -> враг умирает
         if (playerRb.linearVelocity.y < 0 && other.transform.position.y > transform.position.y)
         {
-            playerRb.linearVelocity = new Vector2(playerRb.linearVelocity.x, bounceForce);
+            playerRb.linearVelocity = new Vector2(playerRb.linearVelocity.x, stats.stompBounce);
             Destroy(gameObject);
         }
         else
         {
-            other.GetComponent<PlayerHealth>().TakeDamage(1);
+            other.GetComponent<PlayerHealth>().TakeDamage(stats.contactDamage);
         }
     }
 }

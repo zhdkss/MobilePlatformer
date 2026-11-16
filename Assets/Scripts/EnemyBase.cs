@@ -5,9 +5,9 @@ using UnityEngine;
 [RequireComponent(typeof(SpriteRenderer))]
 public abstract class EnemyBase : MonoBehaviour
 {
+    public EnemyStats stats;                        // числа баланса этого типа врага
+
     [Header("Зрение")]
-    public float viewRange = 5f;                    // как далеко видит
-    [Range(10f, 360f)] public float viewAngle = 120f; // угол обзора перед собой
     public LayerMask obstacleMask;                  // стены и земля закрывают обзор
 
     [Header("Телеграф атаки")]
@@ -40,10 +40,10 @@ public abstract class EnemyBase : MonoBehaviour
 
         Vector2 toPlayer = player.position - transform.position;
         float dist = toPlayer.magnitude;
-        if (dist > viewRange) return false;
+        if (dist > stats.viewRange) return false;
 
         float angle = Vector2.Angle(new Vector2(facing, 0f), toPlayer);
-        if (angle > viewAngle * 0.5f) return false;
+        if (angle > stats.viewAngle * 0.5f) return false;
 
         RaycastHit2D hit = Physics2D.Raycast(transform.position, toPlayer.normalized, dist, obstacleMask);
         Debug.DrawLine(transform.position, player.position, hit.collider == null ? Color.yellow : Color.gray);
@@ -83,7 +83,8 @@ public abstract class EnemyBase : MonoBehaviour
 
     void OnDrawGizmosSelected()
     {
+        if (stats == null) return;
         Gizmos.color = Color.yellow;
-        Gizmos.DrawWireSphere(transform.position, viewRange);
+        Gizmos.DrawWireSphere(transform.position, stats.viewRange);
     }
 }
