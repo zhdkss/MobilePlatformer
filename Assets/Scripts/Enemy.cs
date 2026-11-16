@@ -14,6 +14,7 @@ public class Enemy : MonoBehaviour
         if (playerRb.linearVelocity.y < 0 && other.transform.position.y > transform.position.y)
         {
             playerRb.linearVelocity = new Vector2(playerRb.linearVelocity.x, stats.stompBounce);
+            GameAudio.Play(Sfx.Death);
             Destroy(gameObject);
         }
         else

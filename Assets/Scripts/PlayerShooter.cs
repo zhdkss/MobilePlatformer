@@ -7,7 +7,6 @@ public class PlayerShooter : MonoBehaviour
     public GameObject bulletPrefab;
     public Transform firePoint;
     public PlayerStats stats;                   // скорость и время жизни пули
-    public AudioClip shootSound;
 
     PlayerController controller;
 
@@ -27,6 +26,6 @@ public class PlayerShooter : MonoBehaviour
         GameObject b = Instantiate(bulletPrefab, firePoint.position, Quaternion.identity);
         b.GetComponent<Rigidbody2D>().linearVelocity = new Vector2(dir * stats.bulletSpeed, 0);
         Destroy(b, stats.bulletLife);
-        AudioSource.PlayClipAtPoint(shootSound, Camera.main.transform.position);
+        GameAudio.Play(Sfx.Shoot);
     }
 }

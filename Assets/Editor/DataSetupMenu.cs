@@ -181,8 +181,12 @@ public static class DataSetupMenu
         UnityEventTools.AddPersistentListener(reset.onClick, ctrl.AskReset);
 
         TMP_Text best = MakeText(root, "BestScore", "BEST SCORE: 0", new Vector2(0, -560), new Vector2(900, 90), 44);
-        Slider volume = MakeSlider(root, "VolumeSlider", new Vector2(-640, -400), new Vector2(420, 60));
-        UnityEventTools.AddPersistentListener(volume.onValueChanged, ctrl.OnVolumeChanged);
+        Slider music = MakeSlider(root, "MusicSlider", new Vector2(-640, -360), new Vector2(420, 60));
+        UnityEventTools.AddPersistentListener(music.onValueChanged, ctrl.OnMusicVolumeChanged);
+        MakeText(root, "MusicLabel", "MUSIC", new Vector2(-640, -310), new Vector2(420, 50), 30);
+        Slider sfx = MakeSlider(root, "SfxSlider", new Vector2(-640, -450), new Vector2(420, 60));
+        UnityEventTools.AddPersistentListener(sfx.onValueChanged, ctrl.OnSfxVolumeChanged);
+        MakeText(root, "SfxLabel", "SOUND FX", new Vector2(-640, -400), new Vector2(420, 50), 30);
 
         // панель выбора уровня
         GameObject select = MakePanel(root, "LevelSelectPanel");
@@ -210,7 +214,8 @@ public static class DataSetupMenu
         Fill(so.FindProperty("levelButtons"), lb);
         Fill(so.FindProperty("levelLabels"), ll);
         so.FindProperty("bestScoreLabel").objectReferenceValue = best;
-        so.FindProperty("volumeSlider").objectReferenceValue = volume;
+        so.FindProperty("musicSlider").objectReferenceValue = music;
+        so.FindProperty("sfxSlider").objectReferenceValue = sfx;
         so.FindProperty("levelSelectPanel").objectReferenceValue = select;
         so.FindProperty("confirmPanel").objectReferenceValue = confirm;
         so.ApplyModifiedProperties();

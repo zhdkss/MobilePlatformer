@@ -50,3 +50,24 @@ What I asked the AI agent, what went wrong, what I changed and why.
 - 2026-11-16  Agent got wrong: ...  I changed: ...
 - 2026-11-16  Live balance test: changed <number> in <asset> from ... to ..., game changed without code edits.
 -->
+
+## Week 12 — Assignment 12: sound pass
+
+- 2026-11-16  Asked the agent (Claude Code) for a full sound layer. It wrote `AudioConfig` (all clips and
+  mixer names in one asset in `Assets/Resources`), `AudioManager` (one object, `DontDestroyOnLoad`, created
+  before the first scene so music does not restart on level load) and a static `GameAudio.Play(Sfx.X)`
+  that all my scripts call instead of `AudioSource.PlayClipAtPoint`.
+- 2026-11-16  10 sound events: jump, hit, pickup, enemy wind-up, enemy death, UI click, win, lose, shoot,
+  boss hit. The wind-up sound plays at the start of the wind-up in `EnemyBase` and in the boss loop, so an
+  attack can be heard before it lands. UI click is added to every `Button` when a scene loads.
+- 2026-11-16  Two music tracks (menu + win, level) with a 1 s crossfade on two AudioSources.
+- 2026-11-16  Volume: Music and SFX sliders are saved in `save.json` (0..1) and sent to the mixer as
+  `Log10(value) * 20` dB. Pause calls the `Paused` snapshot (quieter, lowpass).
+- 2026-11-16  Variation: `PlaySfx` picks a random pitch 0.92–1.08 for each repeated sound.
+- 2026-11-16  Decision: removed the old `AudioClip` fields from player, pickup, enemy and boss scripts, so
+  there is one place to change sounds. Replaced the old single `volume` in the save with `musicVolume` and `sfxVolume`.
+
+<!-- TODO (Dias): add what the agent got wrong and what you changed (3-5 lines), after you test on the phone:
+- 2026-11-xx  Agent got wrong: ...  I changed: ...
+- 2026-11-xx  Mix: changed <sound> volume / pitch / mixer level from ... to ... because ...
+-->

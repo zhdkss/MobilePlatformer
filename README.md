@@ -35,3 +35,15 @@ ASSETS AND LICENSES
 
 AI USAGE
 An AI assistant (Claude) was used during development. See AI_LOG.txt.
+
+SOUND SOURCES AND LICENSES (Assets/Audio)
+Every sound and music track in the game was generated for this project with a short Python script
+(square and triangle waves, no samples, no third-party audio). There is no outside license: I own them.
+- jump.wav, pickup.wav, shoot.wav, hurt.wav (hit), bosshit.wav, win.wav: generated chiptune effects
+- windup.wav: enemy wind-up warning (two rising pulses), generated
+- death.wav: enemy death (falling tone + noise), generated
+- click.wav: UI button click, generated
+- lose.wav: player death / time over (three falling notes), generated
+- music.wav: level music loop, generated
+- menu_music.wav: menu and win-screen music loop (calm, 84 bpm, Am-F-G-Em), generated
+The Python generator is not part of the game; the .wav files are the only audio in the repository.

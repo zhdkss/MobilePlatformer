@@ -7,6 +7,7 @@ public class SceneLoader : MonoBehaviour
     public void LoadByName(string sceneName)
     {
         Time.timeScale = 1f;               // на случай, если игра была на паузе
+        GameAudio.SetPaused(false);
         SceneManager.LoadScene(sceneName);
     }
 

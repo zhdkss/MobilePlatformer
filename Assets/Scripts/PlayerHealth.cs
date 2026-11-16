@@ -8,10 +8,10 @@ public class PlayerHealth : MonoBehaviour
     public Image[] hearts;            // 3 сердца из HUD
     public float blinkInterval = 0.1f; // как часто мигает спрайт (только вид)
     public float fallY = -10f;        // ниже этой высоты = упал в яму
-    public AudioClip hurtSound;
 
     int hp;
     bool invincible;
+    bool dead;
     SpriteRenderer sr;
 
     void Start()
@@ -23,17 +23,24 @@ public class PlayerHealth : MonoBehaviour
 
     void Update()
     {
-        if (transform.position.y < fallY) SceneLoader.Restart();
+        if (!dead && transform.position.y < fallY) Die();
     }
 
     public void TakeDamage(int amount)
     {
         if (invincible) return;              // ещё мигаем — урон не проходит
         hp -= amount;
-        AudioSource.PlayClipAtPoint(hurtSound, Camera.main.transform.position);
+        GameAudio.Play(Sfx.Hit);
         UpdateHearts();
-        if (hp <= 0) { SceneLoader.Restart(); return; }
+        if (hp <= 0) { Die(); return; }
         StartCoroutine(Invincibility());
+    }
+
+    void Die()
+    {
+        dead = true;
+        GameAudio.Play(Sfx.Lose);
+        SceneLoader.Restart();
     }
 
     public void Heal(int amount)
