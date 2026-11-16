@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1fdf196ea64ad6c44abf409803b043b8, type: 3}
+  m_Name: Level_01
+  m_EditorClassIdentifier: Assembly-CSharp::LevelData
+  levelNumber: 1
+  levelName: LEVEL 1
+  sceneName: Level1
+  timeLimit: 120
+  gemsToExit: 3
+  spawns: []
+  nextLevel: {fileID: 11400000, guid: 30b0fc33cd49aea41a539c26de80c37c, type: 2}
