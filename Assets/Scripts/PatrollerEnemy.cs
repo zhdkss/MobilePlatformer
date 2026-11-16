@@ -8,26 +8,15 @@ public class PatrollerEnemy : EnemyBase
 
     [Header("Патруль")]
     public Transform[] waypoints;        // точки маршрута (дочерние объекты)
-    public float patrolSpeed = 2f;
-    public float waitAtPoint = 0.5f;
-
-    [Header("Погоня")]
-    public float chaseSpeed = 3.5f;
-    public float loseSightTime = 1.5f;   // сколько секунд ищет, потеряв игрока
-    public float chaseLeash = 2f;        // насколько можно выйти за крайние точки
-
-    [Header("Атака")]
-    public float attackRange = 1.6f;
-    public float windUpTime = 0.5f;      // замах: враг стоит и мигает
-    public float lungeSpeed = 9f;
-    public float lungeTime = 0.25f;
-    public float cooldown = 1f;
+    public float defaultHalfWidth = 3f;  // если точек нет: ходит на столько влево и вправо
+    public float heightReach = 1.5f;     // атакует, только если игрок примерно на его высоте
+    public float arriveDistance = 0.05f; // на таком расстоянии точка считается достигнутой
 
     State state = State.Patrol;
     Vector2[] points;                    // позиции точек в мире, запомнены на старте
     int pointIndex;
     float minX, maxX;
-    float waitTimer, lostTimer;
+    float waitTimer, lostTimer, travelled;
 
     protected override void Start()
     {
@@ -41,7 +30,7 @@ public class PatrollerEnemy : EnemyBase
         }
         else
         {
-            points = new Vector2[] { transform.position + Vector3.left * 3f, transform.position + Vector3.right * 3f };
+            points = new Vector2[] { transform.position + Vector3.left * defaultHalfWidth, transform.position + Vector3.right * defaultHalfWidth };
         }
 
         minX = maxX = points[0].x;
@@ -78,11 +67,11 @@ public class PatrollerEnemy : EnemyBase
         if (CanSeePlayer()) { lostTimer = 0f; SetState(State.Chase); return; }
 
         float targetX = points[pointIndex].x;
-        if (Mathf.Abs(targetX - transform.position.x) < 0.05f)
+        if (Mathf.Abs(targetX - transform.position.x) < arriveDistance)
         {
             // дошли до точки: немного постоять и идти к следующей
             waitTimer += Time.deltaTime;
-            if (waitTimer >= waitAtPoint)
+            if (waitTimer >= stats.waitAtPoint)
             {
                 waitTimer = 0f;
                 pointIndex = (pointIndex + 1) % points.Length;
@@ -91,7 +80,7 @@ public class PatrollerEnemy : EnemyBase
         }
 
         Face(targetX > transform.position.x ? 1 : -1);
-        MoveToX(targetX, patrolSpeed);
+        MoveToX(targetX, stats.patrolSpeed);
     }
 
     void Chase()
@@ -99,13 +88,13 @@ public class PatrollerEnemy : EnemyBase
         if (CanSeePlayer()) lostTimer = 0f;
         else lostTimer += Time.deltaTime;
 
-        if (lostTimer >= loseSightTime) { SetState(State.Patrol); return; }
+        if (lostTimer >= stats.loseSightTime) { SetState(State.Patrol); return; }
 
         FacePlayer();
         float dx = Mathf.Abs(player.position.x - transform.position.x);
         float dy = Mathf.Abs(player.position.y - transform.position.y);
 
-        if (dx <= attackRange && dy < 1.5f && IsOnScreen())
+        if (dx <= stats.attackRange && dy < heightReach && IsOnScreen())
         {
             PlayWindUpSound();
             SetState(State.WindUp);
@@ -113,29 +102,31 @@ public class PatrollerEnemy : EnemyBase
         }
 
         // гонимся, но не дальше поводка, чтобы не убежать с платформы
-        float targetX = Mathf.Clamp(player.position.x, minX - chaseLeash, maxX + chaseLeash);
-        MoveToX(targetX, chaseSpeed);
+        float targetX = Mathf.Clamp(player.position.x, minX - stats.chaseLeash, maxX + stats.chaseLeash);
+        MoveToX(targetX, stats.chaseSpeed);
     }
 
     void WindUp()
     {
         Telegraph();                                    // игрок видит замах и успевает отойти
-        if (stateTimer >= windUpTime) SetState(State.Lunge);
+        if (stateTimer >= stats.windUpTime) { travelled = 0f; SetState(State.Lunge); }
     }
 
     void Lunge()
     {
         // направление рывка зафиксировано в момент замаха (facing в WindUp не менялся)
-        float x = transform.position.x + facing * lungeSpeed * Time.deltaTime;
-        x = Mathf.Clamp(x, minX - chaseLeash, maxX + chaseLeash);
+        float step = stats.attackSpeed * Time.deltaTime;
+        float x = transform.position.x + facing * step;
+        x = Mathf.Clamp(x, minX - stats.chaseLeash, maxX + stats.chaseLeash);
         transform.position = new Vector3(x, transform.position.y, transform.position.z);
 
-        if (stateTimer >= lungeTime) SetState(State.Cooldown);
+        travelled += step;
+        if (travelled >= stats.attackDistance) SetState(State.Cooldown);
     }
 
     void Cooldown()
     {
-        if (stateTimer < cooldown) return;
+        if (stateTimer < stats.cooldown) return;
         lostTimer = 0f;
         SetState(CanSeePlayer() ? State.Chase : State.Patrol);
     }

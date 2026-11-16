@@ -6,7 +6,7 @@ public class PlayerShooter : MonoBehaviour
     public InputActionReference attackAction;   // Player/Attack
     public GameObject bulletPrefab;
     public Transform firePoint;
-    public float bulletSpeed = 12f;
+    public PlayerStats stats;                   // скорость и время жизни пули
     public AudioClip shootSound;
 
     PlayerController controller;
@@ -25,8 +25,8 @@ public class PlayerShooter : MonoBehaviour
     {
         float dir = controller.FacingLeft ? -1f : 1f;
         GameObject b = Instantiate(bulletPrefab, firePoint.position, Quaternion.identity);
-        b.GetComponent<Rigidbody2D>().linearVelocity = new Vector2(dir * bulletSpeed, 0);
-        Destroy(b, 2f);
+        b.GetComponent<Rigidbody2D>().linearVelocity = new Vector2(dir * stats.bulletSpeed, 0);
+        Destroy(b, stats.bulletLife);
         AudioSource.PlayClipAtPoint(shootSound, Camera.main.transform.position);
     }
 }

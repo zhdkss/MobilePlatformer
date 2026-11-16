@@ -5,13 +5,17 @@ public class CoinCounter : MonoBehaviour
 {
     public static CoinCounter Instance;   // чтобы камень мог найти счётчик
     public TMP_Text label;
-    int coins;
 
-    void Awake() { Instance = this; label.text = "x 0"; }
+    public int Gems { get; private set; }    // сколько камней собрано (цель уровня)
+    public int Score { get; private set; }   // очки: идут в рекорд в сохранении
 
-    public void Add()
+    void Awake() { Instance = this; label.text = "0"; }
+
+    // value приходит из ItemStats камня
+    public void Add(int value)
     {
-        coins++;
-        label.text = "x " + coins;
+        Gems++;
+        Score += value;
+        label.text = Score.ToString();
     }
 }

@@ -9,10 +9,6 @@ public class ShooterEnemy : EnemyBase
     [Header("Стрельба")]
     public GameObject projectilePrefab;   // Fireball: в нём уже есть Hazard и Rigidbody2D
     public Transform firePoint;
-    public float projectileSpeed = 6f;
-    public float projectileLife = 4f;
-    public float aimTime = 0.6f;          // замах: сколько целится перед выстрелом
-    public float cooldown = 1.6f;
     public AudioClip shootSound;
 
     [Header("Линия прицела")]
@@ -74,15 +70,15 @@ public class ShooterEnemy : EnemyBase
             aimLine.SetPosition(1, player.position);
         }
 
-        if (stateTimer >= aimTime) SetState(State.Shoot);
+        if (stateTimer >= stats.windUpTime) SetState(State.Shoot);
     }
 
     void Shoot()
     {
         Vector3 from = firePoint ? firePoint.position : transform.position;
         GameObject p = Instantiate(projectilePrefab, from, Quaternion.identity);
-        p.GetComponent<Rigidbody2D>().linearVelocity = aimDir * projectileSpeed;
-        Destroy(p, projectileLife);
+        p.GetComponent<Rigidbody2D>().linearVelocity = aimDir * stats.attackSpeed;
+        Destroy(p, stats.projectileLife);
         if (shootSound) AudioSource.PlayClipAtPoint(shootSound, Camera.main.transform.position);
 
         SetState(State.Cooldown);
@@ -90,6 +86,6 @@ public class ShooterEnemy : EnemyBase
 
     void Cooldown()
     {
-        if (stateTimer >= cooldown) SetState(State.Watch);
+        if (stateTimer >= stats.cooldown) SetState(State.Watch);
     }
 }

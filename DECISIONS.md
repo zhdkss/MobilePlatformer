@@ -31,3 +31,22 @@ What I asked the AI agent, what went wrong, what I changed and why.
 - 2026-11-12  Changed <number> from ... to ... because ...
 - 2026-11-12  Changed <number> from ... to ... because ...
 -->
+
+## Week 11 — Assignment 11: data and saves
+
+- 2026-11-16  Asked the agent (Claude Code) to move all balance numbers into ScriptableObjects and add
+  a JSON save. It made `PlayerStats`, `EnemyStats`, `BossStats`, `ItemStats`, `LevelData` and rewrote
+  `PlayerController`, `PlayerHealth`, `PlayerShooter`, `Enemy`, the three enemy scripts, `Boss` and
+  `Pickup` to read from them. One `EnemyStats` asset per enemy type (Patroller, Shooter, Charger, Walker).
+- 2026-11-16  Save: `SaveData` + `SaveSystem` (JsonUtility, `Application.persistentDataPath/save.json`,
+  try/catch, defaults if the file is missing or broken). I told it NOT to use BinaryFormatter.
+  `unlockedLevels` is a `List<int>`, because JsonUtility cannot save a Dictionary.
+- 2026-11-16  Saves happen after a level (`LevelManager.Complete`), when the volume changes
+  (`SaveSystem.SetVolume`) and in `OnApplicationPause(true)`.
+- 2026-11-16  `LevelManager` reads a `LevelData` asset (spawns, time limit, gems needed, next level), so
+  the same code runs all three levels. The boss level finishes through `Boss.TakeHit` -> `Complete`.
+
+<!-- TODO (Dias): add what the agent got wrong and what you changed (3-5 lines), for example:
+- 2026-11-16  Agent got wrong: ...  I changed: ...
+- 2026-11-16  Live balance test: changed <number> in <asset> from ... to ..., game changed without code edits.
+-->
