@@ -90,19 +90,19 @@ public static class DataSetupMenu
         PlayerStats player = Load<PlayerStats>("PlayerStats");
         if (player == null) { Debug.LogError("Run 'Data 1 - Create Data Assets' first."); return; }
 
-        foreach (var c in Object.FindObjectsByType<PlayerController>(FindObjectsSortMode.None)) Set(c, "stats", player);
-        foreach (var c in Object.FindObjectsByType<PlayerHealth>(FindObjectsSortMode.None)) Set(c, "stats", player);
-        foreach (var c in Object.FindObjectsByType<PlayerShooter>(FindObjectsSortMode.None)) Set(c, "stats", player);
-        foreach (var c in Object.FindObjectsByType<Boss>(FindObjectsSortMode.None)) Set(c, "stats", Load<BossStats>("BossStats"));
+        foreach (var c in Object.FindObjectsByType<PlayerController>()) Set(c, "stats", player);
+        foreach (var c in Object.FindObjectsByType<PlayerHealth>()) Set(c, "stats", player);
+        foreach (var c in Object.FindObjectsByType<PlayerShooter>()) Set(c, "stats", player);
+        foreach (var c in Object.FindObjectsByType<Boss>()) Set(c, "stats", Load<BossStats>("BossStats"));
 
-        foreach (var c in Object.FindObjectsByType<PatrollerEnemy>(FindObjectsSortMode.None)) AssignEnemy(c, "Patroller");
-        foreach (var c in Object.FindObjectsByType<ShooterEnemy>(FindObjectsSortMode.None)) AssignEnemy(c, "Shooter");
-        foreach (var c in Object.FindObjectsByType<ChargerEnemy>(FindObjectsSortMode.None)) AssignEnemy(c, "Charger");
+        foreach (var c in Object.FindObjectsByType<PatrollerEnemy>()) AssignEnemy(c, "Patroller");
+        foreach (var c in Object.FindObjectsByType<ShooterEnemy>()) AssignEnemy(c, "Shooter");
+        foreach (var c in Object.FindObjectsByType<ChargerEnemy>()) AssignEnemy(c, "Charger");
 
-        foreach (var e in Object.FindObjectsByType<Enemy>(FindObjectsSortMode.None))
+        foreach (var e in Object.FindObjectsByType<Enemy>())
             if (e.GetComponent<EnemyBase>() == null) Set(e, "stats", Load<EnemyStats>("EnemyStats_Walker"));
 
-        foreach (var p in Object.FindObjectsByType<Pickup>(FindObjectsSortMode.None))
+        foreach (var p in Object.FindObjectsByType<Pickup>())
             Set(p, "stats", Load<ItemStats>(p.isHeart ? "ItemStats_Heart" : "ItemStats_Gem"));
 
         // префабы камня и сердца: новые копии сразу с данными
