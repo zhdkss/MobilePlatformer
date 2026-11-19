@@ -46,7 +46,18 @@ What I asked the AI agent, what went wrong, what I changed and why.
 - 2026-11-16  `LevelManager` reads a `LevelData` asset (spawns, time limit, gems needed, next level), so
   the same code runs all three levels. The boss level finishes through `Boss.TakeHit` -> `Complete`.
 
-<!-- TODO (Dias): add what the agent got wrong and what you changed (3-5 lines), for example:
-- 2026-11-16  Agent got wrong: ...  I changed: ...
-- 2026-11-16  Live balance test: changed <number> in <asset> from ... to ..., game changed without code edits.
+- 2026-11-16  Agent mistake: the editor tool that sets up my data used `FindObjectsSortMode`, which this
+  Unity version marks as obsolete, so the Console was full of warnings. I asked for a fix; the agent
+  removed the argument from all 9 calls.
+- 2026-11-16  My mistake: I ran "Assign Stats" and "Add LevelManager" before "Create Data Assets" and got
+  "Run Data 1 first" / "No LevelData for scene Level2". The assets did not exist yet. I ran the menu items
+  in the right order and it worked.
+- 2026-11-19  Agent mistake: the new scripts and data assets were committed without their `.meta` files.
+  On a fresh clone Unity would make new GUIDs and every reference in the scenes would turn into "Missing".
+  I added all the `.meta` files and the `ItemStats` on the Gem and Heart prefabs in a new commit.
+- 2026-11-19  Decision: the gem and the heart share one `Pickup` script and differ only by their
+  `ItemStats` asset (score 10 / heal 1), so I can change the value without touching code.
+
+<!-- TODO (Dias): add the result of your live balance test after you record it, then delete this comment:
+- 2026-11-19  Live balance test: changed <field> in <asset> from ... to ..., the game changed without code edits.
 -->
