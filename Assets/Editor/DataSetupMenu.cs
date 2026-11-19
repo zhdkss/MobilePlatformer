@@ -90,19 +90,19 @@ public static class DataSetupMenu
         PlayerStats player = Load<PlayerStats>("PlayerStats");
         if (player == null) { Debug.LogError("Run 'Data 1 - Create Data Assets' first."); return; }
 
-        foreach (var c in Object.FindObjectsByType<PlayerController>(FindObjectsSortMode.None)) Set(c, "stats", player);
-        foreach (var c in Object.FindObjectsByType<PlayerHealth>(FindObjectsSortMode.None)) Set(c, "stats", player);
-        foreach (var c in Object.FindObjectsByType<PlayerShooter>(FindObjectsSortMode.None)) Set(c, "stats", player);
-        foreach (var c in Object.FindObjectsByType<Boss>(FindObjectsSortMode.None)) Set(c, "stats", Load<BossStats>("BossStats"));
+        foreach (var c in Object.FindObjectsByType<PlayerController>()) Set(c, "stats", player);
+        foreach (var c in Object.FindObjectsByType<PlayerHealth>()) Set(c, "stats", player);
+        foreach (var c in Object.FindObjectsByType<PlayerShooter>()) Set(c, "stats", player);
+        foreach (var c in Object.FindObjectsByType<Boss>()) Set(c, "stats", Load<BossStats>("BossStats"));
 
-        foreach (var c in Object.FindObjectsByType<PatrollerEnemy>(FindObjectsSortMode.None)) AssignEnemy(c, "Patroller");
-        foreach (var c in Object.FindObjectsByType<ShooterEnemy>(FindObjectsSortMode.None)) AssignEnemy(c, "Shooter");
-        foreach (var c in Object.FindObjectsByType<ChargerEnemy>(FindObjectsSortMode.None)) AssignEnemy(c, "Charger");
+        foreach (var c in Object.FindObjectsByType<PatrollerEnemy>()) AssignEnemy(c, "Patroller");
+        foreach (var c in Object.FindObjectsByType<ShooterEnemy>()) AssignEnemy(c, "Shooter");
+        foreach (var c in Object.FindObjectsByType<ChargerEnemy>()) AssignEnemy(c, "Charger");
 
-        foreach (var e in Object.FindObjectsByType<Enemy>(FindObjectsSortMode.None))
+        foreach (var e in Object.FindObjectsByType<Enemy>())
             if (e.GetComponent<EnemyBase>() == null) Set(e, "stats", Load<EnemyStats>("EnemyStats_Walker"));
 
-        foreach (var p in Object.FindObjectsByType<Pickup>(FindObjectsSortMode.None))
+        foreach (var p in Object.FindObjectsByType<Pickup>())
             Set(p, "stats", Load<ItemStats>(p.isHeart ? "ItemStats_Heart" : "ItemStats_Gem"));
 
         // префабы камня и сердца: новые копии сразу с данными
@@ -139,6 +139,38 @@ public static class DataSetupMenu
 
     // ---------- 3. LevelManager в уровне ----------
 
+    // Текст таймера сверху по центру, внутри SafeArea. Если TimerText уже есть, берём его.
+    static TMP_Text FindOrMakeTimerLabel()
+    {
+        foreach (TMP_Text existing in Object.FindObjectsByType<TMP_Text>(FindObjectsInactive.Include))
+            if (existing.gameObject.name == "TimerText") return existing;
+
+        Canvas canvas = Object.FindAnyObjectByType<Canvas>();
+        SafeArea safe = Object.FindAnyObjectByType<SafeArea>();
+        Transform parent = safe != null ? safe.transform : canvas.transform;
+
+        GameObject go = new GameObject("TimerText", typeof(RectTransform), typeof(TextMeshProUGUI));
+        Undo.RegisterCreatedObjectUndo(go, "Create TimerText");
+        go.transform.SetParent(parent, false);
+
+        RectTransform rt = go.GetComponent<RectTransform>();
+        rt.anchorMin = rt.anchorMax = new Vector2(0.5f, 1f);       // верхний центр
+        rt.pivot = new Vector2(0.5f, 1f);
+        rt.anchoredPosition = new Vector2(0f, -30f);
+        rt.sizeDelta = new Vector2(700f, 100f);
+
+        TextMeshProUGUI t = go.GetComponent<TextMeshProUGUI>();
+        t.text = "0";
+        t.fontSize = 56f;                                           // не меньше 36
+        t.alignment = TextAlignmentOptions.Center;
+        t.color = Color.white;
+        t.outlineWidth = 0.25f;
+        t.outlineColor = new Color32(0, 0, 0, 255);
+        t.raycastTarget = false;
+        t.font = FindFont();
+        return t;
+    }
+
     [MenuItem("Tools/Gem Runner/Data 3 - Add LevelManager To Open Scene")]
     static void AddLevelManager()
     {
@@ -154,9 +186,13 @@ public static class DataSetupMenu
         LevelManager lm = Object.FindAnyObjectByType<LevelManager>();
         if (lm == null) lm = new GameObject("LevelManager").AddComponent<LevelManager>();
         Set(lm, "data", data);
+
+        // свой текст для таймера (раньше сюда по ошибке попадали надписи кнопок паузы)
+        Set(lm, "timerLabel", FindOrMakeTimerLabel());
+
         Selection.activeGameObject = lm.gameObject;
         EditorSceneManager.MarkSceneDirty(SceneManager.GetActiveScene());
-        Debug.Log("LevelManager uses " + data.name + ". Drag a TMP text into 'Timer Label' to show the timer. Save the scene.");
+        Debug.Log("LevelManager uses " + data.name + " and the TimerText label. Save the scene (Ctrl+S).");
     }
 
     // ---------- 4. UI выбора уровня в MainMenu ----------

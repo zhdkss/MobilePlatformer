@@ -143,4 +143,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Pickup
   isHeart: 0
+  stats: {fileID: 11400000, guid: 17f792358851f5a42a87673a01c5fe3e, type: 2}
   sound: {fileID: 8300000, guid: f626aeb07ddcc6447b6445ca9675d311, type: 3}
