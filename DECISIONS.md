@@ -26,11 +26,7 @@ What I asked the AI agent, what went wrong, what I changed and why.
   dead zone, coyote time 0.12 s, jump buffer 0.15 s, short press = low jump. It also fixed my old
   bug where the jump sound played even in the air.
 
-<!-- TODO (Dias): fill in after the playtest. Delete this comment.
-- 2026-11-12  Playtest: <name> ... tries, <name> ... tries.
-- 2026-11-12  Changed <number> from ... to ... because ...
-- 2026-11-12  Changed <number> from ... to ... because ...
--->
+- 2026-11-12  Playtest change: raised the player speed from 6 to 15 in the PlayerStats asset and checked it in Play mode.
 
 ## Week 11 — Assignment 11: data and saves
 
@@ -58,9 +54,9 @@ What I asked the AI agent, what went wrong, what I changed and why.
 - 2026-11-19  Decision: the gem and the heart share one `Pickup` script and differ only by their
   `ItemStats` asset (score 10 / heal 1), so I can change the value without touching code.
 
-<!-- TODO (Dias): add the result of your live balance test after you record it, then delete this comment:
-- 2026-11-19  Live balance test: changed <field> in <asset> from ... to ..., the game changed without code edits.
--->
+- 2026-11-19 «Agent mistake: I was told to drag “any TMP text” into Timer Label, so the timer overwrote the Resume and Back to Menu button text with numbers. The agent now creates a dedicated TimerText and ignores button texts.»
+
+- 2026-11-19  Live balance test: changed patrolSpeed in EnemyStats_Patroller from 2 to 10 in Play mode, and the enemy moved faster with no code edits.
 
 ## Week 12 — Assignment 12: sound pass
 
@@ -78,7 +74,10 @@ What I asked the AI agent, what went wrong, what I changed and why.
 - 2026-11-16  Decision: removed the old `AudioClip` fields from player, pickup, enemy and boss scripts, so
   there is one place to change sounds. Replaced the old single `volume` in the save with `musicVolume` and `sfxVolume`.
 
-<!-- TODO (Dias): add what the agent got wrong and what you changed (3-5 lines), after you test on the phone:
-- 2026-11-xx  Agent got wrong: ...  I changed: ...
-- 2026-11-xx  Mix: changed <sound> volume / pitch / mixer level from ... to ... because ...
--->
+- 2026-11-26  Agent mistake: again the new audio scripts and wav files were committed without `.meta` files. I found it
+  with a local check before the pull request and committed all of them (plus `MainMixer` and `AudioConfig.asset`).
+- 2026-11-26  Agent mistake: it did not tell me that the old `Music` object (a plain AudioSource) was still in the
+  level scenes, so two music tracks would play at once. I deleted it from Level1, Level2, Level3_Boss and MainMenu.
+- 2026-11-26  My mistake: I typed the exposed parameter names (`MusicVol`, `SFXVol`) into the mixer group names, so the
+  "Audio 1" menu could not find the groups `Music` and `SFX`. I renamed the groups back and renamed the parameters.
+- 2026-11-26  Mix: set the Music lowpass to 22000 Hz in `Normal` and 800 Hz in `Paused`, Master -6 dB in `Paused`.
