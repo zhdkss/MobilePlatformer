@@ -30,7 +30,6 @@ public static class EnemySpawnerMenu
         e.obstacleMask = GroundMask();
         e.projectilePrefab = AssetDatabase.LoadAssetAtPath<GameObject>(FireballPrefab);
         e.firePoint = CreateChild(go, "FirePoint", new Vector3(0f, 0.2f, 0f));
-        e.shootSound = AssetDatabase.LoadAssetAtPath<AudioClip>("Assets/Audio/shoot.wav");
 
         LineRenderer line = go.AddComponent<LineRenderer>();
         line.positionCount = 2;

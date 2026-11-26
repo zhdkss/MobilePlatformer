@@ -42,6 +42,7 @@ public class LevelManager : MonoBehaviour
         if (timeLeft <= 0f)
         {
             finished = true;
+            GameAudio.Play(Sfx.Lose);
             SceneLoader.Restart();              // время вышло
             return;
         }
@@ -73,6 +74,7 @@ public class LevelManager : MonoBehaviour
         if (data.nextLevel != null) SaveSystem.UnlockLevel(data.nextLevel.levelNumber);
         SaveSystem.Save();
 
+        GameAudio.Play(Sfx.Win);
         SceneLoader.LoadNext();
     }
 

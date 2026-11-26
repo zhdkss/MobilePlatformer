@@ -13,7 +13,6 @@ public abstract class EnemyBase : MonoBehaviour
     [Header("Телеграф атаки")]
     public Color telegraphColor = Color.red;        // цвет мигания перед атакой
     public float flashSpeed = 10f;
-    public AudioClip windUpSound;
 
     [Header("Спрайт")]
     public bool spriteFacesRight = true;            // куда смотрит картинка без flipX
@@ -78,7 +77,7 @@ public abstract class EnemyBase : MonoBehaviour
 
     protected void PlayWindUpSound()
     {
-        if (windUpSound) AudioSource.PlayClipAtPoint(windUpSound, Camera.main.transform.position);
+        GameAudio.Play(Sfx.WindUp);
     }
 
     void OnDrawGizmosSelected()

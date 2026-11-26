@@ -14,6 +14,7 @@ public class Bullet : MonoBehaviour
 
         Enemy enemy = other.GetComponent<Enemy>();
         if (enemy != null){
+            GameAudio.Play(Sfx.Death);
             Destroy(enemy.gameObject);
             Destroy(gameObject);
 

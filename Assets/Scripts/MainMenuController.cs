@@ -10,14 +10,16 @@ public class MainMenuController : MonoBehaviour
     public Button[] levelButtons;        // кнопка i запускает levels[i]
     public TMP_Text[] levelLabels;
     public TMP_Text bestScoreLabel;
-    public Slider volumeSlider;
+    public Slider musicSlider;
+    public Slider sfxSlider;
     public GameObject levelSelectPanel;
     public GameObject confirmPanel;
 
     void Start()
     {
         SaveSystem.ApplySettings();
-        volumeSlider.SetValueWithoutNotify(SaveSystem.Data.volume);
+        musicSlider.SetValueWithoutNotify(SaveSystem.Data.musicVolume);
+        sfxSlider.SetValueWithoutNotify(SaveSystem.Data.sfxVolume);
         levelSelectPanel.SetActive(false);
         confirmPanel.SetActive(false);
         Refresh();
@@ -45,7 +47,8 @@ public class MainMenuController : MonoBehaviour
         SceneManager.LoadScene(levels[index].sceneName);
     }
 
-    public void OnVolumeChanged(float value) { SaveSystem.SetVolume(value); }
+    public void OnMusicVolumeChanged(float value) { SaveSystem.SetMusicVolume(value); }
+    public void OnSfxVolumeChanged(float value) { SaveSystem.SetSfxVolume(value); }
 
     public void AskReset() { confirmPanel.SetActive(true); }
     public void CancelReset() { confirmPanel.SetActive(false); }

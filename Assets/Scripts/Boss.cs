@@ -10,7 +10,6 @@ public class Boss : MonoBehaviour
     public GameObject fireballPrefab;
     public Transform firePoint;
     public Transform player;
-    public AudioClip hitSound;
 
     int hp;
     float startX;
@@ -39,7 +38,8 @@ public class Boss : MonoBehaviour
         {
             // Вторая фаза: ниже половины HP стреляет чаще
             float delay = hp > stats.maxHp / 2 ? stats.shootDelay : stats.enragedShootDelay;
-            sr.color = Color.red;              // предупреждение перед выстрелом
+            sr.color = Color.red;
+            GameAudio.Play(Sfx.WindUp);              // предупреждение перед выстрелом
             yield return new WaitForSeconds(stats.windUpTime);
             sr.color = Color.white;
             Shoot();
@@ -58,7 +58,7 @@ public class Boss : MonoBehaviour
     public void TakeHit()
     {
         hp--;
-        AudioSource.PlayClipAtPoint(hitSound, Camera.main.transform.position);
+        GameAudio.Play(Sfx.BossHit);
         hpBar.value = (float)hp / stats.maxHp;
         if (hp <= 0)
         {

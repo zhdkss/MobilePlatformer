@@ -9,7 +9,6 @@ public class ShooterEnemy : EnemyBase
     [Header("Стрельба")]
     public GameObject projectilePrefab;   // Fireball: в нём уже есть Hazard и Rigidbody2D
     public Transform firePoint;
-    public AudioClip shootSound;
 
     [Header("Линия прицела")]
     public LineRenderer aimLine;          // показывает, куда полетит выстрел
@@ -79,7 +78,7 @@ public class ShooterEnemy : EnemyBase
         GameObject p = Instantiate(projectilePrefab, from, Quaternion.identity);
         p.GetComponent<Rigidbody2D>().linearVelocity = aimDir * stats.attackSpeed;
         Destroy(p, stats.projectileLife);
-        if (shootSound) AudioSource.PlayClipAtPoint(shootSound, Camera.main.transform.position);
+        GameAudio.Play(Sfx.Shoot);
 
         SetState(State.Cooldown);
     }

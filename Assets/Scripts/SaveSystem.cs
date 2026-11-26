@@ -57,7 +57,8 @@ public static class SaveSystem
     {
         if (data.unlockedLevels == null) data.unlockedLevels = new List<int>();
         if (!data.unlockedLevels.Contains(1)) data.unlockedLevels.Add(1);   // первый уровень открыт всегда
-        data.volume = Mathf.Clamp01(data.volume);
+        data.musicVolume = Mathf.Clamp01(data.musicVolume);
+        data.sfxVolume = Mathf.Clamp01(data.sfxVolume);
         data.bestScore = Mathf.Max(0, data.bestScore);
     }
 
@@ -76,24 +77,33 @@ public static class SaveSystem
         if (score > Data.bestScore) Data.bestScore = score;
     }
 
-    public static void SetVolume(float value)
+    public static void SetMusicVolume(float value)
     {
-        Data.volume = Mathf.Clamp01(value);
+        Data.musicVolume = Mathf.Clamp01(value);
         ApplySettings();
         Save();                                    // настройки сохраняем сразу
     }
 
+    public static void SetSfxVolume(float value)
+    {
+        Data.sfxVolume = Mathf.Clamp01(value);
+        ApplySettings();
+        Save();
+    }
+
     public static void ApplySettings()
     {
-        AudioListener.volume = Data.volume;
+        if (AudioManager.Instance != null) AudioManager.Instance.ApplyVolumes();
     }
 
     // Сброс прогресса: настройки (громкость) остаются
     public static void ResetProgress()
     {
-        float volume = Data.volume;
+        float music = Data.musicVolume;
+        float sfx = Data.sfxVolume;
         data = new SaveData();
-        data.volume = volume;
+        data.musicVolume = music;
+        data.sfxVolume = sfx;
         Save();
     }
 }

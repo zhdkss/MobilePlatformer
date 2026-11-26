@@ -1,0 +1,37 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 779b7acf4ed1e2e49ab5c4c070eebb53, type: 3}
+  m_Name: AudioConfig
+  m_EditorClassIdentifier: Assembly-CSharp::AudioConfig
+  mixer: {fileID: 24100000, guid: 0e1d844e6da70164b9f0ace6896ba447, type: 2}
+  musicGroup: {fileID: -3918208625173598590, guid: 0e1d844e6da70164b9f0ace6896ba447, type: 2}
+  sfxGroup: {fileID: -4328571008089807959, guid: 0e1d844e6da70164b9f0ace6896ba447, type: 2}
+  musicVolumeParam: MusicVol
+  sfxVolumeParam: SFXVol
+  normalSnapshot: Normal
+  pausedSnapshot: Paused
+  snapshotFade: 0.2
+  menuMusic: {fileID: 8300000, guid: 33f490edeb9a4a34eb081525956b0e6f, type: 3}
+  levelMusic: {fileID: 8300000, guid: 305dbb0981dd27d49ad829cb54000f92, type: 3}
+  crossfadeTime: 1
+  jump: {fileID: 8300000, guid: c9cc0c32215d1e24184eac56aa1dfab9, type: 3}
+  hit: {fileID: 8300000, guid: 834d2b3a1a0df6143a19d5f5963f1928, type: 3}
+  pickup: {fileID: 8300000, guid: f626aeb07ddcc6447b6445ca9675d311, type: 3}
+  windUp: {fileID: 8300000, guid: c96851913b0662f4f8c62b79b26297cf, type: 3}
+  death: {fileID: 8300000, guid: 9a2074ab4406b1143bc8d515d3c4c21b, type: 3}
+  click: {fileID: 8300000, guid: 80875e39be1c37347b2946006fce80d2, type: 3}
+  win: {fileID: 8300000, guid: 216d1888644e1354fb18ec5b397c1825, type: 3}
+  lose: {fileID: 8300000, guid: d9f3d4fe952db9344a2affb2f758b2d1, type: 3}
+  shoot: {fileID: 8300000, guid: 2efeb518653e03347a6daf48ad745488, type: 3}
+  bossHit: {fileID: 8300000, guid: 0ca5345b6e35a354d916e7bbff9936f7, type: 3}
+  pitchMin: 0.92
+  pitchMax: 1.08

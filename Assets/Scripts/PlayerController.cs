@@ -14,7 +14,6 @@ public class PlayerController : MonoBehaviour
     [Header("Input System")]
     public InputActionReference moveAction;   // Player/Move
     public InputActionReference jumpAction;   // Player/Jump
-    public AudioClip jumpSound;
 
     Rigidbody2D rb;
     SpriteRenderer sr;
@@ -105,7 +104,7 @@ public class PlayerController : MonoBehaviour
         jumpBufferTimer = 0f;
         coyoteTimer = 0f;
         rb.linearVelocity = new Vector2(rb.linearVelocity.x, stats.jumpForce);
-        if (jumpSound) AudioSource.PlayClipAtPoint(jumpSound, Camera.main.transform.position);
+        GameAudio.Play(Sfx.Jump);
     }
 
     public bool FacingLeft => sr.flipX;   // пригодится для стрельбы
