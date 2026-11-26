@@ -22,6 +22,13 @@ public class LevelManager : MonoBehaviour
         SaveSystem.ApplySettings();
         timeLeft = data.timeLimit;
 
+        // Таймер каждый кадр переписывает свой текст, поэтому он не должен быть надписью кнопки
+        if (timerLabel != null && timerLabel.GetComponentInParent<UnityEngine.UI.Button>() != null)
+        {
+            Debug.LogWarning("Timer Label is a button text (" + timerLabel.name + "). Run Tools > Gem Runner > Data 3 to create a real timer text.");
+            timerLabel = null;
+        }
+
         foreach (EnemySpawn spawn in data.spawns)
             if (spawn.prefab != null)
                 Instantiate(spawn.prefab, spawn.position, Quaternion.identity);
